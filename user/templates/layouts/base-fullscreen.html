@@ -1,0 +1,41 @@
+{% load adminlte_helpers i18n %}
+{% load static %}
+
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="canonical" href=" https://appseed.us/adminlte"/>
+
+  <title>
+    Django AdminLTE - {% block title %}{% endblock %} | AppSeed
+  </title> 
+
+  <!-- Google Font: Source Sans Pro -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="{% static '/admin-lte/plugins/fontawesome-free/css/all.min.css' %}">
+  <!-- icheck bootstrap -->
+  <link rel="stylesheet" href="{% static '/admin-lte/plugins/icheck-bootstrap/icheck-bootstrap.min.css' %}">
+  <!-- Theme style -->
+  <link rel="stylesheet" href="{% static '/admin-lte/dist/css/adminlte.min.css' %}">
+  <!-- Specific Page CSS goes HERE  -->  
+
+  {% block stylesheets %}{% endblock stylesheets %}
+
+</head>
+<body class="hold-transition {% block body_class %}{% endblock body_class %}">
+
+  {% block content %}{% endblock content %}
+
+  <!-- Specific Page JS goes HERE  -->
+  {% block javascripts %}{% endblock javascripts %}
+
+  <script src="{% static '/admin-lte/plugins/jquery/jquery.min.js' %}"></script>
+  <!-- Bootstrap 4 -->
+  <script src="{% static '/admin-lte/plugins/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+</body>
+</html>

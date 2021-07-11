@@ -1,0 +1,102 @@
+{% extends "layouts/base-fullscreen.html" %}
+{% load static %}
+
+{% block title %} Đăng ký {% endblock %} 
+
+<!-- Element injected in the BODY element -->
+{% block body_class %} register-page {% endblock body_class %}
+
+{% block content %}
+
+  <div class="register-box">
+
+    <div class="login-logo">
+      <b>Dunt-Stock</b>
+    </div>    
+
+    <div class="card">
+      <div class="card-body register-card-body">
+        <p class="login-box-msg">
+            {% if msg %}
+                <span class="text-danger">{{ msg | safe }}</span>
+            {% else %}
+            <span>
+              Đăng ký Dunt Stock
+            </span>
+            {% endif %}            
+        </p>
+
+        <form role="form" method="post" action="">
+
+          {% csrf_token %}
+
+          <div class="input-group mb-3">
+            {{ form.username }}
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-user"></span>
+              </div>
+            </div>
+          </div>
+          <span class="text-error">{{ form.username.errors }}</span>
+          
+          <div class="input-group mb-3">
+            {{ form.email }}
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-envelope"></span>
+              </div>
+            </div>
+          </div>
+          <span class="text-error">{{ form.email.errors }}</span>
+
+          <div class="input-group mb-3">
+            {{ form.password1 }}
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+          </div>
+          <span class="text-error">{{ form.password1.errors }}</span>
+
+          <div class="input-group mb-3">
+            {{ form.password2 }}
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+          </div>
+          <span class="text-error">{{ form.password2.errors }}</span>
+          
+          <div class="row">
+            <div class="col-8">
+              {% comment %} <div class="icheck-primary">
+                <input type="checkbox" id="agreeTerms" name="terms" value="agree">
+                <label for="agreeTerms">
+                I agree to the <a href="#">terms</a>
+                </label>
+              </div> {% endcomment %}
+            </div>
+            <!-- /.col -->
+            <div class="col-4">
+              <button type="submit" name="register" class="btn btn-primary btn-block">Đăng ký</button>
+            </div>
+            <!-- /.col -->
+          </div>
+        </form>
+
+        <br />
+        <div class="text-center">
+          Bạn đã có tài khoản? <a href="{% url 'login' %}" class="text-center">Đăng nhập</a>
+        </div>
+
+      </div>
+      <!-- /.form-box -->
+    </div><!-- /.card -->
+  </div>
+
+{% endblock content %}
+
+

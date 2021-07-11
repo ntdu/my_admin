@@ -1,0 +1,14 @@
+{% for hidden in from.hidden_fields %}
+{{ hidden }}
+{% endfor %}
+
+{% for field in form.visible_fields %}
+
+<div class="{{ css_class }}">
+    <div class="form-group">
+        {{ field.errors }}
+        {{ field.label_tag }} {{ field }}
+    </div>
+</div>
+
+{% endfor %}

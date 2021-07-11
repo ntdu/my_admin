@@ -1,0 +1,75 @@
+{% extends "layouts/base-fullscreen.html" %}
+
+{% block title %} Đăng nhập {% endblock %} 
+
+<!-- Element injected in the BODY element -->
+{% block body_class %} login-page {% endblock body_class %}
+
+
+{% block content %}
+
+  <div class="login-box">
+
+    <div class="login-logo">
+      <b>Dunt-Stock</b>
+    </div>
+
+    <!-- /.login-logo -->
+    <div class="card">
+      <div class="card-body login-card-body">
+
+            <p class="login-box-msg">
+            {% if msg %}
+                {{ msg | safe }}
+            {% else %}
+                Đăng nhập Dunt Stock
+            {% endif %}
+        </p>
+
+        <form method="post" action="">
+
+          {% csrf_token %}
+
+          <div class="input-group mb-3">
+            {{ form.username }}
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-envelope"></span>
+              </div>
+            </div>
+          </div>
+          <div class="input-group mb-3">
+            {{ form.password }}
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-lock"></span>
+              </div>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-7">
+              
+            </div>
+            <!-- /.col -->
+            <div class="col-5">
+              <button type="submit" name="login" class="btn btn-primary btn-block">Đăng nhập</button>
+            </div>
+            <!-- /.col -->
+          </div>
+        </form>
+
+        <br /><br />
+
+        <div class="text-center">
+            Bạn chưa có tài khoản? <a href="{% url 'register' %}" class="text-center">Đăng ký</a>
+            <br />
+            <br />
+        </div>
+
+      </div>
+      <!-- /.login-card-body -->
+    </div>
+
+  </div>
+
+{% endblock content %}
