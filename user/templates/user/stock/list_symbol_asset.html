@@ -1,0 +1,163 @@
+{% extends 'user/base.html' %}
+{% load static %}
+
+{% block title %}Danh sách cổ phiếu quan tâm{% endblock %}
+{% block page_actions %}Danh sách cổ phiếu quan tâm{% endblock %}
+
+{% block style_sheets %}
+<style>
+  .badge-purple {
+    color: #fff;
+    background-color: #de04f7;
+  }
+  
+  td input {
+    border: none;
+    border-bottom: 1px dashed #000;
+    background-color: transparent;
+    outline: none;
+  }
+
+  
+
+</style>
+{% endblock %}
+{% block extra_js %}
+<script>
+  function create_symbol_asset() {
+    $.LoadingOverlay('show');
+    $.post('{% url "user:create_symbol_asset" %}', {
+      symbol_id: $('#symbol_id').val(),
+      csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
+    }, function(response) {
+      $('#modal-import .close').trigger('click');
+      $.LoadingOverlay('hide');
+      Toast.fire({ icon: 'success', title: 'Cập nhật thành công' });
+      setTimeout(function() { window.location.reload() }, 1000);
+    });
+  }
+
+  function delete_symbol_asset(id) {
+    if (confirm('Bạn có muốn xóa theo dõi mã cổ phiếu này?')) {
+      $.LoadingOverlay('show');
+      $.post('{% url "user:delete_symbol_asset" %}', {
+        symbol_id: id,
+        csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
+      }, function (response) {
+        if (response.is_success) {
+          window.location.href = window.location.href;
+        }
+        else {
+          alert(response.error_msg);
+          $.LoadingOverlay('hide');
+        }
+      })
+    }
+  }
+
+</script>
+{% endblock %}
+
+{% block content %}
+
+<section class="content">
+  
+  <div class="container-fluid">
+    <div style="margin-bottom: 10px;">
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#modal-import">
+        Thêm mã theo dõi
+      </button>
+
+      {% comment %} <a href="#" class="btn btn-primary" data-toggle="modal" data-modal-src="{% url 'user:create_symbol_asset' %}" data-modal-size="modal-md">Thêm mã theo dõi</a> {% endcomment %}
+    </div>
+
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card card-success card-outline">
+          <div class="card-header">
+            <h3 class="card-title">Danh sách khách hàng</h3>
+
+            <div class="card-tools">
+              <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                <i class="fas fa-minus"></i>
+              </button>
+            </div>
+          </div>
+          <div class="card-body">
+            <table class="datatable table table-striped table-bordered">
+              <thead>
+                <tr>
+                  <th style="width: 10px" class="text-center">#</th>
+                  <th class="text-center">Mã cổ phiếu</th>
+                  <th class="text-center">Tên công ty</th>
+                  <th class="text-center" style="width: 100px"> </th>
+                </tr>
+                
+              </thead>
+              <tbody>
+                  {% for item in stock_assets %}
+                  <tr>
+                    <td>{{ forloop.counter }}</td>
+                    
+                    <td class="text-center text-bold">{{ item.symbol.code }}</td>
+                    <td>{{ item.symbol.company_name }}</td>
+                    
+                    <td class="text-center">
+                      <button class="btn btn-danger" onclick="delete_symbol_asset({{ item.id }})"><i
+                          class="fa fa-times"></i></button>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+          <!-- /.card-body -->
+        </div>
+        <!-- /.card -->
+      </div>
+    </div>
+  </div>
+
+
+</section>
+
+<div class="modal fade" id="modal-import">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">Thêm mã theo dõi</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="row">
+
+          <div class="col-md-12">
+              <div class="form-group">
+              <label>Chọn Mã</label>
+              <div class="input-group">
+                  <select id="symbol_id" name="symbol_id" class="form-control">
+                    <option value="">-- Chọn mã chứng khoán --</option>
+                    {% for symbol in symbols %}
+                      <option value="{{symbol.id}}">{{symbol.code}}</option>
+                    {% endfor %}
+                  </select>
+              </div>
+              </div>
+          </div>
+
+        </div>
+        
+      </div>
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+        <button type="button" class="btn btn-primary" onclick="create_symbol_asset()">Lưu</button>
+      </div>
+    </div>
+    <!-- /.modal-content -->
+  </div>
+  <!-- /.modal-dialog -->
+</div>
+
+{% endblock %}

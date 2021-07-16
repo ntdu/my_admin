@@ -1,4 +1,4 @@
-{% extends "layouts/base-fullscreen.html" %}
+{% extends "user/base-fullscreen.html" %}
 {% load static %}
 
 {% block title %} Đăng ký {% endblock %} 
@@ -39,6 +39,16 @@
             </div>
           </div>
           <span class="text-error">{{ form.username.errors }}</span>
+
+          <div class="input-group mb-3">
+            {{ form.phone }}
+            <div class="input-group-append">
+              <div class="input-group-text">
+                <span class="fas fa-phone"></span>
+              </div>
+            </div>
+          </div>
+          <span class="text-error">{{ form.phone.errors }}</span>
           
           <div class="input-group mb-3">
             {{ form.email }}
@@ -89,7 +99,7 @@
 
         <br />
         <div class="text-center">
-          Bạn đã có tài khoản? <a href="{% url 'login' %}" class="text-center">Đăng nhập</a>
+          Bạn đã có tài khoản? <a href="{% url 'user:login' %}" class="text-center">Đăng nhập</a>
         </div>
 
       </div>

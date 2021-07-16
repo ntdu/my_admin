@@ -1,0 +1,78 @@
+{% extends 'user/base-fullscreen.html' %}
+{% load static %}
+
+{% block style_sheets %}
+<style>
+  .badge-purple {
+    color: #fff;
+    background-color: #de04f7;
+  }
+  
+  td input {
+    border: none;
+    border-bottom: 1px dashed #000;
+    background-color: transparent;
+    outline: none;
+  }
+</style>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+
+function submit() {
+  $.LoadingOverlay('show');
+  $.post('{% url "user:create_symbol_asset" %}', {
+    symbol_id: $('#symbol_id').val(),
+    csrfmiddlewaretoken: $('input[name="csrfmiddlewaretoken"]').val()
+  }, function(response) {
+    $.LoadingOverlay('hide');
+    if (response.is_success) {
+      Toast.fire({ icon: 'success', title: 'Gia hạn thành công' });
+      setTimeout(function() { parent.window.location.reload() }, 1000);
+    }
+    else {
+      Toast.fire({ icon: 'error', title: response.err_message });
+    }
+  });
+}
+
+
+</script>
+{% endblock %}
+
+{% block content %}
+{% csrf_token %}
+ <div class="card card-default card-popup">
+    <div class="card-header">
+      <h3 class="card-title">Thêm mã theo dõi</h3>
+
+      <div class="card-tools">
+        <button type="button" class="btn btn-tool" onclick="parent.closeIframeModal()">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+    </div>
+    <div class="card-body">
+      <input type="text" name="investor_id" id="investor_id" value="{{investor_id}}" hidden/>
+      
+      <div class="col-md-12">
+          <div class="form-group">
+          <label>Chọn Mã</label>
+          <div class="input-group">
+              <select id="symbol_id" name="symbol_id" class="form-control">
+                <option value="">-- Chọn mã chứng khoán --</option>
+                {% for symbol in symbols %}
+                  <option value="{{symbol.id}}">{{symbol.name}}</option>
+                {% endfor %}
+              </select>
+          </div>
+          </div>
+      </div>
+
+      <div class="col-md-12">
+        <button type="submit" class="btn btn-primary" onclick="submit()">Lưu</button>
+      </div>
+    </div>
+ </div>
+{% endblock %}

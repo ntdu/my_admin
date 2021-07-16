@@ -3,6 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 from django.utils.translation import gettext_lazy as _
+from user.models import Investor 
 
 
 def validate_length(value):
@@ -19,15 +20,25 @@ class CreateUserForm(forms.Form):
         widget=forms.HiddenInput())
 
     username = forms.CharField(
-        label="Tên đăng nhập", 
+        label="Họ và tên", 
         required=True, 
         widget=forms.TextInput(
             attrs={
-                "placeholder" : "Tên đăng nhập",                
+                "placeholder" : "Họ và tên",                
                 "class": "form-control"
             }
         ))
-    
+
+    phone = forms.CharField(
+        label="Số điện thoại", 
+        required=True, 
+        widget=forms.TextInput(
+            attrs={
+                "placeholder" : "Số điện thoại",                
+                "class": "form-control"
+            }
+        ))
+
     email = forms.EmailField(
         label="Email", 
         required=False, 
@@ -37,7 +48,7 @@ class CreateUserForm(forms.Form):
                 "class": "form-control"
             }
         ))
-    
+
     password1 = forms.CharField(
         label="Password", 
         required=True, 
@@ -68,13 +79,17 @@ class CreateUserForm(forms.Form):
 
         if self.data.get('password1') != self.data.get('password2'):
             self.errors['password1'] = "Mật khẩu không khớp"
+            print("password1")
             
             return False
 
-        if User.objects.filter(username=self.data.get('username')).exists():
-            self.errors['username'] = "Tên đăng nhập đã tồn tại"
+        if User.objects.filter(username=self.data.get('phone')).exists():
+            self.errors['phone'] = "Số điện thoại đã tồn tại"
+            print("phone")
             
             return False
+
+        return True
 
 
     def save(self):
@@ -83,16 +98,23 @@ class CreateUserForm(forms.Form):
 
     def create(self):
         user = User.objects.create_user(
-            self.data.get('username'),
+            self.data.get('phone'),
             self.data.get('email'),
             self.data.get('password1')       
         )
         user.save()
+
+        investor = Investor(
+            name = self.data.get('username'),
+            login_account =  user
+        )
+        investor.save()
+
     
     def update(self, id):
         user = User.objects.get(id=self.data.get('id'))
 
-        user.username = self.data.get('username')
+        user.username = self.data.get('phone')
         user.email = self.data.get('email')
         user.password = self.data.get('password1')
         user.save()

@@ -1,4 +1,4 @@
-{% extends "layouts/base-fullscreen.html" %}
+{% extends "user/base-fullscreen.html" %}
 
 {% block title %} Đăng nhập {% endblock %} 
 
@@ -61,7 +61,7 @@
         <br /><br />
 
         <div class="text-center">
-            Bạn chưa có tài khoản? <a href="{% url 'register' %}" class="text-center">Đăng ký</a>
+            Bạn chưa có tài khoản? <a href="{% url 'user:register' %}" class="text-center">Đăng ký</a>
             <br />
             <br />
         </div>
