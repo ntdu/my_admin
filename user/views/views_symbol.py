@@ -26,7 +26,9 @@ def run_telegram():
 
 @login_required
 def list_symbol_asset(request):
-    run_telegram()
+    if not settings.IS_RUN_TELEGRAM: 
+        settings.IS_RUN_TELEGRAM = True
+        run_telegram()
 
     stock_assets = Investor.objects.filter(login_account=request.user).first().stockasset_set.all()
     
