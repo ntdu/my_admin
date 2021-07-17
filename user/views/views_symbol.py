@@ -68,12 +68,12 @@ def stock(update, context):
         symbol_daily_info.save()
 
         telegram_message = f""" 
-            Mã: {symbol_code},
-            RSI: {rsi},
-            VOLUME: {volume:,},
-            OPEN: {open:,},
-            CLOSE: {close:,},
-            SMA10: {sma10:,},
+            Mã: {symbol_code}
+            RSI: {rsi}
+            VOLUME: {volume:,}
+            OPEN: {open:,}
+            CLOSE: {close:,}
+            SMA10: {sma10:,}
         """
 
         context.bot.send_message(chat_id=update.effective_chat.id, text=telegram_message)
