@@ -88,6 +88,7 @@ DATABASES = {
     }
 }
 
+TELEGRAM_TOKEN = '1732645870:AAHe6nJ-vtwF5XL3tvcY2Yb1gX1GxROT9EQ'
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
